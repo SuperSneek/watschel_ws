@@ -8,7 +8,7 @@ The original project repositories use the package manager [treep](https://gitlab
 The following packages are needed:
 - [odri_control_interface](https://github.com/open-dynamic-robot-initiative/odri_control_interface)
 - [master_board_sdk](https://github.com/open-dynamic-robot-initiative/master-board/tree/master/sdk/master_board_sdk)
-The master_board_sdk is a subfolder of the (master board repository)[https://github.com/open-dynamic-robot-initiative/master-board]. We added this repo as a submodule, but for the workspace to work, the sdk directory has to be moved into the brunhilde_ws/src/solo8_packages directory.
+The master_board_sdk is a subfolder of the [master board repository](https://github.com/open-dynamic-robot-initiative/master-board)
 
 The following packages are needed as dependencies and are availabe through the ubuntu repositories:
 - [boost](https://www.boost.org/) (sudo apt install libboost-all-dev)
