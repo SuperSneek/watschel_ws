@@ -1,0 +1,6 @@
+[submodule "src/solo8_packages/odri_control_interface"]
+	path = src/solo8_packages/odri_control_interface
+	url = https://github.com/open-dynamic-robot-initiative/odri_control_interface
+[submodule "src/solo8_packages/master-board"]
+	path = src/solo8_packages/master-board
+	url = https://github.com/open-dynamic-robot-initiative/master-board.git
