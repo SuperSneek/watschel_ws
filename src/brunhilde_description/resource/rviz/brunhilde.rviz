@@ -7,8 +7,6 @@ Panels:
         - /Global Options1
         - /Status1
         - /Brunhilde1
-        - /Brunhilde1/Status1
-        - /Brunhilde1/Links1
       Splitter Ratio: 0.5
     Tree Height: 555
   - Class: rviz_common/Selection
@@ -129,6 +127,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        dummy:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Mass Properties:
         Inertia: false
         Mass: false
@@ -140,7 +142,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: dummy
     Frame Rate: 30
   Name: root
   Tools:
