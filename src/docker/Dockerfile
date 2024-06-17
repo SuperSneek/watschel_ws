@@ -27,7 +27,7 @@ RUN apt-get update && apt-get upgrade -y
 
 # ROS dev tools
 RUN apt-get install -y ros-dev-tools
-RUN apt-get install -y ros-iron-desktop gazebo ros-iron-joint-state-publisher-gui ros-iron-robot-state-publisher ros-iron-xacro
+RUN apt-get install -y ros-iron-desktop ros-iron-joint-state-publisher-gui ros-iron-robot-state-publisher ros-iron-xacro gazebo ros-iron-gazebo-ros-pkgs ros-iron-ros-gz
 RUN apt-get install -y python3 python3-pip python3-colcon-common-extensions
 
 WORKDIR "/home"

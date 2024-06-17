@@ -13,6 +13,8 @@
     <color rgba="0.0 0.59 1.0 1.0"/>
   </material>
 
+  <xacro:include filename="brunhilde_gazebo.xacro"/>
+
   <link name="dummy">
   </link>
 
@@ -86,5 +88,4 @@
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
     color_name="${color_name}"/>
-
 </robot>
