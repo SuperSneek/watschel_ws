@@ -4,7 +4,14 @@ This is a ros2 iron workspace for Brunhilde, the HCR Lab's quadruped based on th
 ## Dependencies
 The original project repositories use the package manager [treep](https://gitlab.is.tue.mpg.de/amd-clmc/treep). To make it easier to run our workspace inside a docker container we built the project without treep.
 
-### Third Party Packages
+### ROS Packages
+The workspace depends on the following ROS packages:
+```ros-iron-joint-state-publisher-gui ros-iron-robot-state-publisher ros-iron-xacro gazebo ros-iron-gazebo-ros-pkgs ros-iron-ros-gz```
+
+You can install them with apt, if you added the ros repos:
+```sudo apt install ros-iron-joint-state-publisher-gui ros-iron-robot-state-publisher ros-iron-xacro gazebo ros-iron-gazebo-ros-pkgs ros-iron-ros-gz```
+
+### ODRI Packages
 The following packages are needed:
 - [odri_control_interface](https://github.com/open-dynamic-robot-initiative/odri_control_interface)
 - [master_board_sdk](https://github.com/open-dynamic-robot-initiative/master-board/tree/master/sdk/master_board_sdk)
@@ -21,8 +28,10 @@ The following packages are needed as dependencies and are availabe through the u
 To install them all at once just run:
 ```sudo apt install libboost-all-dev doxygen libeigen3-dev ros-iron-eigenpy pybind11-dev libyaml-cpp-dev```
 
-
 ## Installation
 with all dependencies installed, clone the repository and build the workspace with colcon:
 ```colcon build```
+
+Don't forget to setup the workspace after building. From inside the workspace folder you need to run
+```source install/setup.bash```
 
