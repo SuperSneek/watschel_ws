@@ -15,11 +15,8 @@ RUN sh -c "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-s
 RUN apt-get install -y -q
 
 # universe
-RUN apt-get install -y software-properties-common curl
+RUN apt-get install -y software-properties-common curl git
 RUN add-apt-repository universe
-
-# PyEnv for Python Version Management
-RUN curl https://pyenv.run | bash
 
 # ROS GPG key
 RUN apt-get update
@@ -32,8 +29,9 @@ RUN apt-get update && apt-get upgrade -y
 # ROS dev tools
 RUN apt-get install -y ros-dev-tools
 RUN apt-get install -y ros-$ROS_DISTRO-desktop ros-$ROS_DISTRO-joint-state-publisher-gui ros-$ROS_DISTRO-robot-state-publisher ros-$ROS_DISTRO-xacro
-RUN apt-get install -y ros-$ROS_DISTRO-gz-tools-vendor ros-$ROS_DISTRO-gz-sim-vendor
-RUN apt-get install -y python3 python3-pip python3-colcon-common-extensions
+RUN apt-get install -y ros-$ROS_DISTRO-ros-gz
+RUN apt-get install -y python3 python3-pip python3-colcon-common-extensions python3-numpy python-is-python3
+RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> /root/.bashrc
 
 WORKDIR "/home"
 
@@ -41,13 +39,4 @@ WORKDIR "/home"
 RUN git clone https://github.com/Nordegraf/brunhilde_ws.git --recursive
 RUN apt-get install -y libeigen3-dev pybind11-dev doxygen ros-jazzy-eigenpy libyaml-cpp-dev libboost-all-dev
 
-# Python packages
-RUN pip install numpy --upgrade
-RUN pip install xacro pin
-
 ENV DISPLAY :0
-
-# Entrypoint
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
