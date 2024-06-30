@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'brunhilde_joy'
+package_name = 'brunhilde_teleop'
 
 setup(
     name=package_name,

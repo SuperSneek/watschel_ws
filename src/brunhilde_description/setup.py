@@ -8,7 +8,7 @@ package_name = 'brunhilde_description'
 xacro_path = os.path.join('resource', 'xacro', 'brunhilde.urdf.xacro')
 urdf_path = os.path.join('resource', 'urdf', 'brunhilde.urdf')
 
-os.system(f'ros2 run xacro xacro {xacro_path} > {urdf_path}')
+# os.system(f'ros2 run xacro xacro {xacro_path} > {urdf_path}')
 
 setup(
     name=package_name,

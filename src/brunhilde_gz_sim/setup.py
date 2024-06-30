@@ -19,7 +19,7 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='root',
+    maintainer='Niklas Conen',
     maintainer_email='niklas.conen@student.kit.edu',
     description="gazebo integration for the Solo8 based robot of the KIT's HCR Lab.",
     license='MIT',
