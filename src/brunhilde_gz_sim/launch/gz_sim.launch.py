@@ -6,7 +6,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, AppendEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.actions import RegisterEventHandler
+from launch.actions import RegisterEventHandler, ExecuteProcess
 from launch.event_handlers import OnProcessExit
 
 
@@ -33,7 +33,7 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource(
                     os.path.join(pkg_gz_sim, 'launch', 'gz_sim.launch.py')
                 ),
-                launch_arguments={'gz_args': f'-r empty.sdf', 'on_exit_shutdown': 'true'}.items()
+                launch_arguments={'gz_args': f'-r empty.sdf'}.items()
             )
 
     control = IncludeLaunchDescription(
@@ -66,16 +66,11 @@ def generate_launch_description():
                 output='screen'
             )
 
-    delay_control = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=spawner,
-            on_exit=[control],
-        )
-    )
+
 
     return LaunchDescription([
         bringup,
         model,
         gazebo,
-        delay_control
+        spawner
     ])
