@@ -4,6 +4,12 @@ from setuptools import find_packages, setup
 
 package_name = 'brunhilde_description'
 
+# convert the xacro files to urdf
+xacro_path = os.path.join('resource', 'xacro', 'brunhilde.urdf.xacro')
+urdf_path = os.path.join('resource', 'urdf', 'brunhilde.urdf')
+
+os.system(f'ros2 run xacro xacro {xacro_path} > {urdf_path}')
+
 setup(
     name=package_name,
     version='1.0.0',
@@ -16,6 +22,8 @@ setup(
         (os.path.join('share', package_name, 'resource/xacro/meshes'), glob(os.path.join('resource', 'xacro/meshes/*.stl'))),
         (os.path.join('share', package_name, 'resource/xacro'), glob(os.path.join('resource', 'xacro/*.xacro'))),
         (os.path.join('share', package_name, 'resource/rviz'), glob(os.path.join('resource', 'rviz/*.rviz'))),
+        (os.path.join('share', package_name, 'resource/urdf'), glob(os.path.join('resource', 'urdf/*.urdf'))),
+        (os.path.join('share', package_name, 'config'), glob(os.path.join('config', '*.yaml'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,7 +34,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'state_publisher = brunhilde_description.state_publisher:main',
+            'make_urdf = brunhilde_description.make_urdf:make_urdf',
         ],
     },
 )

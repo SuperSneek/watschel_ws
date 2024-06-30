@@ -127,7 +127,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        dummy:
+        world:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -142,7 +142,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: dummy
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:

@@ -4,3 +4,6 @@
 [submodule "src/solo8_packages/master-board"]
 	path = src/solo8_packages/master-board
 	url = https://github.com/open-dynamic-robot-initiative/master-board.git
+[submodule "src/solo8_packages/ros2_hardware_interface_odri"]
+	path = src/solo8_packages/ros2_hardware_interface_odri
+	url = https://github.com/Nordegraf/ros2_hardware_interface_odri.git

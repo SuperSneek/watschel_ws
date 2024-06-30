@@ -1,59 +1,40 @@
 <?xml version="1.0" ?>
-<robot name="brunhilde">
-  <gazebo reference="base_link">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FL_FOOT">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FL_LOWER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FL_UPPER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FR_FOOT">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FR_LOWER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="FR_UPPER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HL_FOOT">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HL_LOWER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HL_UPPER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HR_FOOT">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HR_LOWER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="HR_UPPER_LEG">
-    <material>Gazebo/Blue</material>
-  </gazebo>
+<robot name="brunhilde" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <gazebo>
-    <plugin name="gazebo_ros_joint_state_publisher"
-            filename="libgazebo_ros_joint_state_publisher.so">
-      <update_rate>20</update_rate>
-      <joint_name>FL_HFE</joint_name>
-      <joint_name>FL_KFE</joint_name>
-      <joint_name>FR_HFE</joint_name>
-      <joint_name>FR_KFE</joint_name>
-      <joint_name>HL_HFE</joint_name>
-      <joint_name>HL_KFE</joint_name>
-      <joint_name>HR_HFE</joint_name>
-      <joint_name>HR_KFE</joint_name>
-      <always_on>true</always_on>
-    </plugin>
-  </gazebo>
+  <xacro:macro name="gz_mat" params="link">
+    <gazebo reference="${link}">
+      <material>
+        <ambient>1 0 0 1</ambient>
+        <diffuse>1 0 0 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:gz_mat link="base_link" />
+  <xacro:gz_mat link="FL_FOOT" />
+  <xacro:gz_mat link="FL_LOWER_LEG" />
+  <xacro:gz_mat link="FL_UPPER_LEG" />
+  <xacro:gz_mat link="FR_FOOT" />
+  <xacro:gz_mat link="FR_LOWER_LEG" />
+  <xacro:gz_mat link="FR_UPPER_LEG" />
+  <xacro:gz_mat link="HL_FOOT" />
+  <xacro:gz_mat link="HL_LOWER_LEG" />
+  <xacro:gz_mat link="HL_UPPER_LEG" />
+  <xacro:gz_mat link="HR_FOOT" />
+  <xacro:gz_mat link="HR_LOWER_LEG" />
+  <xacro:gz_mat link="HR_UPPER_LEG" />
+
+  <!--<plugin filename="gz-sim-joint-state-publisher-system"
+          name="gz::sim::systems::JointStatePublisher">
+    <joint_name>FL_HFE</joint_name>
+    <joint_name>FL_KFE</joint_name>
+    <joint_name>FR_HFE</joint_name>
+    <joint_name>FR_KFE</joint_name>
+    <joint_name>HL_HFE</joint_name>
+    <joint_name>HL_KFE</joint_name>
+    <joint_name>HR_HFE</joint_name>
+    <joint_name>HR_KFE</joint_name>
+  </plugin>-->
 
 </robot>

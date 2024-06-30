@@ -3,9 +3,13 @@
 <package format="3">
   <name>brunhilde_bringup</name>
   <version>1.0.0</version>
-  <description>Bringup scripts and launch files to start services needed by the robot</description>
+  <description>Bringup scripts and launch files for Brunhilde</description>
   <maintainer email="niklas.conen@student.kit.edu">Niklas Conen</maintainer>
   <license>MIT</license>
+
+  <depend>rviz2</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>brunhilde_description</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

@@ -1,9 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="brunhilde"
-  xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-  xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-  xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-  xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+<robot name="brunhilde" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="color_name" value="petrol" />
   <xacro:property name="mesh_ext" value="stl" />
@@ -13,10 +9,12 @@
     <color rgba="0.0 0.59 1.0 1.0"/>
   </material>
 
-  <xacro:include filename="brunhilde_gazebo.xacro"/>
+  <link name="world"/>
 
-  <link name="dummy">
-  </link>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
 
   <!-- This file is based on: https://atlas.is.localnet/confluence/display/AMDW/Quadruped+URDF+Files -->
   <link name="base_link">
@@ -42,12 +40,6 @@
       />
     </inertial>
   </link>
-
-  <!-- Dummy joint to connect the base_link to the world -->
-  <joint name="dummy_joint" type="fixed">
-    <parent link="dummy"/>
-    <child link="base_link"/>
-  </joint>
 
   <xacro:include filename="leg.xacro"/>
 
@@ -88,4 +80,11 @@
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
     color_name="${color_name}"/>
+
+  <xacro:include filename="brunhilde_gazebo.xacro"/>
+  <xacro:property name="use_mock_hardware" value="false"/>
+  <xacro:property name="use_sim_hardware" value="true"/>
+  <xacro:include filename="brunhilde_ros2_control.urdf.xacro"/>
+
+
 </robot>
