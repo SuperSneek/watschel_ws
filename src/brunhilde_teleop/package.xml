@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>brunhilde_joy</name>
+  <name>brunhilde_teleop</name>
   <version>1.0.0</version>
-  <description>Joy Controller for Brunhilde</description>
+  <description>Teleoperation Tools for Brunhilde</description>
   <maintainer email="niklas.conen@student.kit.edu">Niklas Conen</maintainer>
   <license>MIT</license>
+
+  <depend>joy</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

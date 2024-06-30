@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='Niklas Conen',
     maintainer_email='niklas.conen@student.kit.edu',
-    description='Joy Controller for Brunhilde',
+    description='Teleoperation Tools for Brunhilde',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
