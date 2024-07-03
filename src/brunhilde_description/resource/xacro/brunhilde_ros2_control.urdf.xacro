@@ -45,38 +45,38 @@
         		<plugin>gz_ros2_control/GazeboSimSystem</plugin>
 			</xacro:if>
 
-      <!--<xacro:if value="${use_mock_hardware}">
-        <plugin>mock_components/GenericSystem</plugin>
-        <param name="calculate_dynamics">true</param>
+			<xacro:if value="${use_mock_hardware}">
+				<plugin>mock_components/GenericSystem</plugin>
+				<param name="calculate_dynamics">true</param>
 				<param name="state_following_offset">0.0</param>
-			</xacro:if>-->
+			</xacro:if>
 
-        <xacro:unless value="${use_sim_hardware}">
-          <plugin>ros2_control_odri/SystemOdriHardware</plugin>
-          <property name="prop_config_yaml" value="$(find brunhilde_description)/config/config_solo8.yaml" />
-          <param name="odri_config_yaml">${prop_config_yaml}</param>
-          <param name="desired_starting_position">0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</param>
-          <param name="default_joint_cmd">
-            FL_HFE 0.0 0.0 0.0 3.0 0.05
-            FL_KFE 0.0 0.0 0.0 3.0 0.05
-            FR_HFE 0.0 0.0 0.0 3.0 0.05
-            FR_KFE 0.0 0.0 0.0 3.0 0.05
-            HL_HFE 0.0 0.0 0.0 3.0 0.05
-            HL_KFE 0.0 0.0 0.0 3.0 0.05
-            HR_HFE 0.0 0.0 0.0 3.0 0.05
-            HR_KFE 0.0 0.0 0.0 3.0 0.05
-          </param>
-          <param name="default_joint_state">
-            FL_HFE 0.0 0.0 0.0 3.0 0.05
-            FL_KFE 0.0 0.0 0.0 3.0 0.05
-            FR_HFE 0.0 0.0 0.0 3.0 0.05
-            FR_KFE 0.0 0.0 0.0 3.0 0.05
-            HL_HFE 0.0 0.0 0.0 3.0 0.05
-            HL_KFE 0.0 0.0 0.0 3.0 0.05
-            HR_HFE 0.0 0.0 0.0 3.0 0.05
-            HR_KFE 0.0 0.0 0.0 3.0 0.05
-          </param>
-      </xacro:unless>
+			<xacro:if value="${use_real_hardware}">
+				<plugin>ros2_control_odri/SystemOdriHardware</plugin>
+				<property name="prop_config_yaml" value="$(find brunhilde_description)/config/config_solo8.yaml" />
+				<param name="odri_config_yaml">${prop_config_yaml}</param>
+				<param name="desired_starting_position">0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</param>
+				<param name="default_joint_cmd">
+					FL_HFE 0.0 0.0 0.0 3.0 0.05
+					FL_KFE 0.0 0.0 0.0 3.0 0.05
+					FR_HFE 0.0 0.0 0.0 3.0 0.05
+					FR_KFE 0.0 0.0 0.0 3.0 0.05
+					HL_HFE 0.0 0.0 0.0 3.0 0.05
+					HL_KFE 0.0 0.0 0.0 3.0 0.05
+					HR_HFE 0.0 0.0 0.0 3.0 0.05
+					HR_KFE 0.0 0.0 0.0 3.0 0.05
+				</param>
+				<param name="default_joint_state">
+					FL_HFE 0.0 0.0 0.0 3.0 0.05
+					FL_KFE 0.0 0.0 0.0 3.0 0.05
+					FR_HFE 0.0 0.0 0.0 3.0 0.05
+					FR_KFE 0.0 0.0 0.0 3.0 0.05
+					HL_HFE 0.0 0.0 0.0 3.0 0.05
+					HL_KFE 0.0 0.0 0.0 3.0 0.05
+					HR_HFE 0.0 0.0 0.0 3.0 0.05
+					HR_KFE 0.0 0.0 0.0 3.0 0.05
+				</param>
+			</xacro:if>
 		</hardware>
 
 		<xacro:ros2_control_joint link="FL_HFE" />
@@ -89,12 +89,14 @@
 		<xacro:ros2_control_joint link="HR_KFE" />
 	</ros2_control>
 
-	<gazebo>
-    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-		<parameters>$(find brunhilde_control)/config/ros2_control.yaml</parameters>
-		<parameters>$(find brunhilde_control)/config/ros2_control_gz_time.yaml</parameters>
-		<robot_param>robot_description</robot_param>
-      	<robot_param_node>robot_state_publisher</robot_param_node>
-    </plugin>
-	</gazebo>
+	<xacro:if value="${use_sim_hardware}">
+		<gazebo>
+			<plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+				<parameters>$(find brunhilde_control)/config/ros2_control.yaml</parameters>
+				<parameters>$(find brunhilde_control)/config/ros2_control_gz_time.yaml</parameters>
+				<robot_param>robot_description</robot_param>
+				<robot_param_node>robot_state_publisher</robot_param_node>
+			</plugin>
+		</gazebo>
+	</xacro:if>
 </robot>

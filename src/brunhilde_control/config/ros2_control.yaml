@@ -2,13 +2,13 @@ controller_manager:
   ros__parameters:
     update_rate: 1000  # Hz
 
-    position_controller:
-      type: position_controllers/JointGroupPositionController
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-position_controller:
+joint_trajectory_controller:
   ros__parameters:
     joints:
       - FL_HFE
@@ -19,3 +19,21 @@ position_controller:
       - HL_KFE
       - HR_HFE
       - HR_KFE
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    open_loop_control: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      joint1:
+        trajectory: 0.05
+        goal: 0.03

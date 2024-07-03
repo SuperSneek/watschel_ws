@@ -24,28 +24,28 @@ def generate_launch_description():
         output="both",
     )
 
-    joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
-        output='screen'
+    joint_state_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    position_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'position_controller'],
-        output='screen'
+    trajectory_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
     )
 
     delay_pos = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster,
-            on_exit=[position_controller],
+            on_exit=[trajectory_controller],
         )
     )
 
 
     return LaunchDescription([
+        controller_node,
         joint_state_broadcaster,
-        position_controller,
-        delay_pos,
+        trajectory_controller
     ])
