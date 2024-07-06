@@ -17,23 +17,16 @@ robot_controllers = PathJoinSubstitution(
 )
 
 def generate_launch_description():
-    controller_node = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        parameters=[robot_controllers],
-        output="both",
+    joint_state_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'joint_state_broadcaster'],
+        output='screen'
     )
 
-    joint_state_broadcaster = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-    )
-
-    trajectory_controller = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+    trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'joint_trajectory_controller'],
+        output='screen'
     )
 
     delay_jtc = RegisterEventHandler(
@@ -45,7 +38,5 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        controller_node,
-        joint_state_broadcaster,
-        trajectory_controller
+        delay_jtc
     ])

@@ -26,7 +26,7 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource(
                     os.path.join(pkg_brunhilde_bringup, 'launch', 'bringup.launch.py')
                 ),
-                launch_arguments={'use_sim_time': 'true'}.items()
+                launch_arguments={'use_sim': 'true'}.items()
             )
 
     gazebo = IncludeLaunchDescription(
@@ -38,7 +38,7 @@ def generate_launch_description():
 
     control = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(get_package_share_directory('brunhilde_control'), 'launch', 'control.launch.py')
+                    os.path.join(get_package_share_directory('brunhilde_control'), 'launch', 'sim_control.launch.py')
                 )
             )
 
@@ -62,11 +62,8 @@ def generate_launch_description():
                     'config_file': os.path.join(pkg_brunhilde_gz_sim, 'config','gz_bridge.yaml'),
                     'qos_overrides./tf_static.publisher.durability': 'transient_local',
                 }],
-
                 output='screen'
             )
-
-
 
     return LaunchDescription([
         bringup,

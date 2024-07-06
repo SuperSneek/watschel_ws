@@ -1,31 +1,51 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
+from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition
+from launch_ros.actions import Node
+from launch_ros.descriptions import ParameterValue
 
 import xacro
 
-
-def generate_launch_description():
+def create_robot_description(context):
     urdf_file_name = 'resource/xacro/brunhilde.urdf.xacro'
 
-    urdf = os.path.join(
-        get_package_share_directory('brunhilde_description'),
-        urdf_file_name)
+    urdf = os.path.join(get_package_share_directory('brunhilde_description'), urdf_file_name)
 
-    doc = xacro.process_file(urdf)
+    doc = xacro.process_file(urdf, mappings={'use_sim_hardware': context.launch_configurations['use_sim'],
+                                             'use_mock_hardware': context.launch_configurations['use_mock_hardware'],
+                                             'use_real_hardware': context.launch_configurations['use_hardware']})
     robot_desc = doc.toprettyxml(indent='  ')
+    return [SetLaunchConfiguration('robot_description', robot_desc)]
 
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+def generate_launch_description():
+    use_sim = LaunchConfiguration('use_sim', default='false')
+    use_mock_hardware = LaunchConfiguration('use_mock_hardware', default='false')
+    use_hardware = LaunchConfiguration('use_hardware', default='true')
     use_rviz = LaunchConfiguration('rviz', default='true')
 
-    arg_sim_time = DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-            description='Use simulation (Gazebo) clock if true')
+    robot_desc = OpaqueFunction(function=create_robot_description)
+
+    arg_sim = DeclareLaunchArgument(
+                'use_sim',
+                default_value='false',
+                description='Bringup everything needed for Gazebo simulation.'
+            )
+
+    arg_mock_hardware = DeclareLaunchArgument(
+                        'use_mock_hardware',
+                        default_value='false',
+                        description='Use mock hardware interface for testing.'
+                        )
+
+    arg_hardware = DeclareLaunchArgument(
+                    'use_hardware',
+                    default_value='true',
+                    description='Use real hardware interface.'
+                )
+
 
     arg_rviz = DeclareLaunchArgument(
                 "rviz",
@@ -39,24 +59,27 @@ def generate_launch_description():
             name='robot_state_publisher',
             output='screen',
             parameters=[{
-                'use_sim_time': use_sim_time,
-                'robot_description': robot_desc
-                }],
-            arguments=[urdf])
+                'use_sim_time': use_sim,
+                'robot_description': ParameterValue(LaunchConfiguration('robot_description'), value_type=str)
+                }]
+            )
 
     rviz = Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
+            parameters=[{'use_sim_time': use_sim}],
             arguments=['-d', os.path.join(get_package_share_directory('brunhilde_description'), 'resource', 'rviz', 'brunhilde.rviz')],
             condition=IfCondition(use_rviz),
             )
 
     return LaunchDescription([
-        arg_sim_time,
+        arg_sim,
+        arg_mock_hardware,
+        arg_hardware,
         arg_rviz,
+        robot_desc,
         rsp,
         rviz,
     ])

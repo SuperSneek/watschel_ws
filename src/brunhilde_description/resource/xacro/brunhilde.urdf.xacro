@@ -82,9 +82,6 @@
     color_name="${color_name}"/>
 
   <xacro:include filename="brunhilde_gazebo.xacro"/>
-  <xacro:property name="use_mock_hardware" value="true"/>
-  <xacro:property name="use_sim_hardware" value="false"/>
-  <xacro:property name="use_real_hardware" value="false"/>
   <xacro:include filename="brunhilde_ros2_control.urdf.xacro"/>
 
 </robot>
