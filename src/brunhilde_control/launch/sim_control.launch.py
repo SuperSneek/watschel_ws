@@ -38,5 +38,6 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        delay_jtc
+        joint_state_broadcaster,
+        trajectory_controller
     ])

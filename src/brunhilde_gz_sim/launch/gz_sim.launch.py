@@ -6,12 +6,13 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, AppendEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.actions import RegisterEventHandler, ExecuteProcess
+from launch.actions import TimerAction, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 
 
 def generate_launch_description():
     pkg_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_brunhilde_control = get_package_share_directory('brunhilde_control')
 
     pkg_brunhilde_gz_sim = get_package_share_directory('brunhilde_gz_sim')
     world = os.path.join(pkg_brunhilde_gz_sim, 'worlds', 'flat.sdf')
@@ -36,9 +37,9 @@ def generate_launch_description():
                 launch_arguments={'gz_args': f'-r empty.sdf'}.items()
             )
 
-    control = IncludeLaunchDescription(
+    controllers = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(get_package_share_directory('brunhilde_control'), 'launch', 'sim_control.launch.py')
+                    os.path.join(pkg_brunhilde_control, 'launch', 'sim_control.launch.py')
                 )
             )
 
@@ -48,9 +49,9 @@ def generate_launch_description():
                 arguments=[
                     '-name', 'Brunhilde',
                     '-topic', 'robot_description',
+                    '-z', '0.4',
                     '-x', '0',
                     '-y', '0',
-                    '-z', '0.5'
                 ],
                 output='screen',
             )
@@ -60,14 +61,16 @@ def generate_launch_description():
                 executable='parameter_bridge',
                 parameters=[{
                     'config_file': os.path.join(pkg_brunhilde_gz_sim, 'config','gz_bridge.yaml'),
-                    'qos_overrides./tf_static.publisher.durability': 'transient_local',
                 }],
                 output='screen'
             )
 
+    # controllers must be started seperately
+    # everything we tried to start them in the same launch file failed
+
     return LaunchDescription([
-        bringup,
         model,
+        bringup,
         gazebo,
         spawner
     ])

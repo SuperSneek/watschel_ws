@@ -35,22 +35,9 @@ class Movements(Node):
             initial_point.positions = self.joint_state.position if (len(self.joint_state.position) > 0) else [math.pi/2, -math.pi, math.pi/2, -math.pi, -math.pi/2, math.pi, -math.pi/2, math.pi]
             initial_point.time_from_start = rclpy.duration.Duration(seconds=1).to_msg()
 
-            final = JointTrajectoryPoint()
-            final.positions = [math.pi/2, -math.pi, math.pi/2, -math.pi, -math.pi/2, math.pi, -math.pi/2, math.pi]
-            final.time_from_start = rclpy.duration.Duration(seconds=5).to_msg()
-
-            action = FollowJointTrajectory.Goal()
-            action.trajectory.joint_names = self.joint_names
-            action.trajectory.points = [initial_point, final]
-
-            self.client.send_goal_async(action)
-            self.get_logger().info('Sitting down...')
-
-    def standup(self):
-        if (self.joint_state is not None):
-            initial_point = JointTrajectoryPoint()
-            initial_point.positions = self.joint_state.position if (len(self.joint_state.position) > 0) else [0, 0, 0, 0, 0, 0, 0, 0]
-            initial_point.time_from_start = rclpy.duration.Duration(seconds=1).to_msg()
+            mid = JointTrajectoryPoint()
+            mid.positions = [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2, -math.pi/4, math.pi/2, -math.pi/4, math.pi/2]
+            mid.time_from_start = rclpy.duration.Duration(seconds=3).to_msg()
 
             final = JointTrajectoryPoint()
             final.positions = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -58,10 +45,33 @@ class Movements(Node):
 
             action = FollowJointTrajectory.Goal()
             action.trajectory.joint_names = self.joint_names
-            action.trajectory.points = [initial_point, final]
+            action.trajectory.points = [initial_point, mid, final]
 
-            self.client.send_goal_async(action)
+            future = self.client.send_goal_async(action)
+            self.get_logger().info('Sitting down...')
+            rclpy.spin_until_future_complete(self, future)
+
+    def standup(self):
+        if (self.joint_state is not None):
+            initial_point = JointTrajectoryPoint()
+            initial_point.positions = self.joint_state.position if (len(self.joint_state.position) > 0) else [0, 0, 0, 0, 0, 0, 0, 0]
+            initial_point.time_from_start = rclpy.duration.Duration(seconds=1).to_msg()
+
+            mid = JointTrajectoryPoint()
+            mid.positions = [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2, -math.pi/4, math.pi/2, -math.pi/4, math.pi/2]
+            mid.time_from_start = rclpy.duration.Duration(seconds=3).to_msg()
+
+            final = JointTrajectoryPoint()
+            final.positions = [math.pi/2, -math.pi, math.pi/2, -math.pi, -math.pi/2, math.pi, -math.pi/2, math.pi]
+            final.time_from_start = rclpy.duration.Duration(seconds=5).to_msg()
+
+            action = FollowJointTrajectory.Goal()
+            action.trajectory.joint_names = self.joint_names
+            action.trajectory.points = [initial_point, mid, final]
+
+            future = self.client.send_goal_async(action)
             self.get_logger().info('Standing up...')
+            rclpy.spin_until_future_complete(self, future)
 
 
 def main(args=None):
@@ -71,11 +81,9 @@ def main(args=None):
 
     for i in range(0, 20):
         move.sitdown()
-        rclpy.spin_once(move, timeout_sec=5)
-        time.sleep(5)
+        time.sleep(2)
         move.standup()
-        rclpy.spin_once(move, timeout_sec=5)
-        time.sleep(5)
+        time.sleep(2)
 
     move.destroy_node()
     rclpy.shutdown()

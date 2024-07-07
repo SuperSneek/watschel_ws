@@ -25,7 +25,7 @@
 
     <!-- Joint between the base and the ${prefix} upper leg -->
     <joint name="${prefix}_HFE" type="revolute">
-      <parent link="base_link"/>
+      <parent link="body_frame"/>
       <child link="${prefix}_UPPER_LEG"/>
       <limit effort="1000" lower="-10" upper="10" velocity="1000"/>
       <!-- joints rotates around the y-axis -->

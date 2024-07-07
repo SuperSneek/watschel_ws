@@ -9,15 +9,17 @@
     <color rgba="0.0 0.59 1.0 1.0"/>
   </material>
 
-  <link name="world"/>
+  <link name="base_link">
+  </link>
 
-  <joint name="fixed" type="fixed">
-    <parent link="world"/>
-    <child link="base_link"/>
+  <joint name="base_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="body_frame"/>
   </joint>
 
   <!-- This file is based on: https://atlas.is.localnet/confluence/display/AMDW/Quadruped+URDF+Files -->
-  <link name="base_link">
+  <link name="body_frame">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
