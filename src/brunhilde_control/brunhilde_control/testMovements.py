@@ -1,0 +1,152 @@
+import rclpy
+import rclpy.logging
+from rclpy.node import Node
+from rclpy.action import ActionClient
+import math
+import sys
+import time
+
+from trajectory_msgs.msg import JointTrajectoryPoint
+from control_msgs.action import FollowJointTrajectory
+from sensor_msgs.msg import JointState
+
+class TestMovements(Node):
+
+    """A simple controller that makes the robot stand up."""
+    def __init__(self):
+        super().__init__('movements')
+        self.client = ActionClient(self, FollowJointTrajectory, '/joint_trajectory_controller/follow_joint_trajectory')
+        self.joint_names = ['FL_HFE', 'FL_KFE', 'FR_HFE', 'FR_KFE', 'HL_HFE', 'HL_KFE', 'HR_HFE', 'HR_KFE']
+        server_reached = self.client.wait_for_server(timeout_sec=60.0)
+        if not server_reached:
+            self.get_logger().error('Unable to connect to arm action server. Timeout exceeded.')
+            sys.exit()
+
+        self.joint_state = JointState()
+        self.js_sub = self.create_subscription(JointState, '/joint_states', self.joint_state_callback, 10)
+        self.js_sub
+
+        # wait for the first joint state message
+        if len(self.joint_state.position) == 0:
+            self.get_logger().info('No Joint States received yet. Defaulting to 0.0 for all joints.')
+            self.joint_state.position = [0.0] * 8
+
+    def joint_state_callback(self, msg):
+        self.joint_state = msg
+
+    def sitdown(self):
+
+        sitdown = {
+            "name": "sitdown",
+            "trajectory": [
+                {
+                    "positions": [
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2, -math.pi/4, math.pi/2, -math.pi/4, math.pi/2],
+                        [math.pi/2, -math.pi, math.pi/2, -math.pi, -math.pi/2, math.pi, -math.pi/2, math.pi],
+                    ],
+                    "durations": [2, 4, 6]
+                }
+            ]
+        }
+
+        self.execute(sitdown)
+
+    def standup(self) -> None:
+        standup = {
+            "name": "standup",
+            "trajectory": [
+                {
+                    "positions": [
+                        [0, 0, 0, 0, 0, 0, 0, 0]
+                    ],
+                    "durations": [10]
+                }
+            ]
+        }
+
+        self.execute(standup)
+
+    def test_legs(self) -> None:
+        testlegs = {
+            "name": "test_legs",
+            "trajectory": [
+                {
+                    "positions": [
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [math.pi/2, -math.pi, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, math.pi/2, -math.pi, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, math.pi/2, -math.pi, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, math.pi/2, -math.pi],
+                        [0, 0, 0, 0, 0, 0, 0, 0]
+                    ],
+                    "durations": [2, 8, 14, 20, 26, 32, 38, 44, 50]
+                }
+            ]
+        }
+
+        self.execute(testlegs)
+
+    def execute(self, movement: dict) -> None:
+        """
+            execute movements using the joint trajectory controller
+
+            a movement is a json style dictionary with the following structure:
+            {
+                "name": "movement_name",
+                "trajectory": [
+                    {
+                        "positions": [[pos1], [pos2], ... ],
+                        "durations": [durations]
+                    }
+                ]
+            }
+
+            each element of the positions array is a list of the joint positions. All 8 joints are required.
+            the durations array contains the time from the start of the movement to the position in seconds.
+
+            each movement starts from the current joint positions.
+        """
+
+        action = FollowJointTrajectory.Goal()
+        action.trajectory.joint_names = self.joint_names
+        action.trajectory.points = [JointTrajectoryPoint()]
+
+        for trajectory in movement["trajectory"]:
+            for i in range(len(trajectory["positions"])):
+                point = JointTrajectoryPoint()
+                point.positions = trajectory["positions"][i]
+                point.time_from_start = rclpy.duration.Duration(seconds=trajectory["durations"][i]).to_msg()
+                action.trajectory.points.append(point)
+
+        action.trajectory.points[0].positions = self.joint_state.position
+        action.trajectory.points[0].time_from_start = rclpy.duration.Duration(seconds=0).to_msg()
+
+        self.get_logger().info(f'Executing movement {movement["name"]}...')
+        future = self.client.send_goal_async(action)
+        rclpy.spin_until_future_complete(self, future)
+
+        actionfuture = future.result().get_result_async()
+        rclpy.spin_until_future_complete(self, actionfuture)
+        self.get_logger().info(f'Movement {movement["name"]} executed successfully.')
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    move = TestMovements()
+
+    for i in range(0, 1):
+        move.sitdown()
+        time.sleep(4)
+        move.standup()
+        time.sleep(4)
+
+    move.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()

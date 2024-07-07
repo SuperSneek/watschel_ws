@@ -25,7 +25,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'standup = brunhilde_control.standup:main',
+            'testMovements = brunhilde_control.testMovements:main',
         ],
     },
 )
