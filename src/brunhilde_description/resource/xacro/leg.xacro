@@ -21,7 +21,7 @@
 
   <!-- Macro defining solo leg. -->
   <xacro:macro name="leg" params="prefix is_front is_right mesh_path
-                                  mesh_ext color_name">
+                                  mesh_ext col_mesh_path color_name">
 
     <!-- Joint between the base and the ${prefix} upper leg -->
     <joint name="${prefix}_HFE" type="revolute">
@@ -91,10 +91,10 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <xacro:unless value="${is_right}">
-            <mesh filename="${mesh_path}solo_upper_leg_left_side.${mesh_ext}"/>
+            <mesh filename="${col_mesh_path}solo_upper_leg_left_side.${mesh_ext}"/>
           </xacro:unless>
           <xacro:if value="${is_right}">
-            <mesh filename="${mesh_path}solo_upper_leg_right_side.${mesh_ext}"/>
+            <mesh filename="${col_mesh_path}solo_upper_leg_right_side.${mesh_ext}"/>
           </xacro:if>
         </geometry>
         <material name="${color_name}"/>
@@ -170,10 +170,10 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <xacro:unless value="${is_right}">
-            <mesh filename="${mesh_path}solo_lower_leg_v2_left_side.${mesh_ext}"/>
+            <mesh filename="${col_mesh_path}solo_lower_leg_v2_left_side.${mesh_ext}"/>
           </xacro:unless>
           <xacro:if value="${is_right}">
-            <mesh filename="${mesh_path}solo_lower_leg_v2_right_side.${mesh_ext}"/>
+            <mesh filename="${col_mesh_path}solo_lower_leg_v2_right_side.${mesh_ext}"/>
           </xacro:if>
         </geometry>
         <material name="${color_name}"/>

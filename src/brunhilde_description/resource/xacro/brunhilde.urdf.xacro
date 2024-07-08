@@ -4,6 +4,7 @@
   <xacro:property name="color_name" value="petrol" />
   <xacro:property name="mesh_ext" value="stl" />
   <xacro:property name="mesh_path" value="package://brunhilde_description/resource/xacro/meshes/" />
+  <xacro:property name="col_mesh_path" value="package://brunhilde_description/resource/xacro/collisions/" />
 
   <material name="${color_name}">
     <color rgba="0.0 0.59 1.0 1.0"/>
@@ -30,7 +31,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="${mesh_path}solo_body.${mesh_ext}"/>
+        <mesh filename="${col_mesh_path}solo_body.${mesh_ext}"/>
       </geometry>
     </collision>
     <inertial>
@@ -52,6 +53,7 @@
     is_right="false"
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
+    col_mesh_path="${col_mesh_path}"
     color_name="${color_name}"/>
 
   <!-- Include the front right leg -->
@@ -61,6 +63,7 @@
     is_right="true"
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
+    col_mesh_path="${col_mesh_path}"
     color_name="${color_name}"/>
 
 
@@ -71,6 +74,7 @@
     is_right="false"
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
+    col_mesh_path="${col_mesh_path}"
     color_name="${color_name}"/>
 
 
@@ -81,6 +85,7 @@
     is_right="true"
     mesh_path="${mesh_path}"
     mesh_ext="${mesh_ext}"
+    col_mesh_path="${col_mesh_path}"
     color_name="${color_name}"/>
 
   <xacro:include filename="brunhilde_gazebo.xacro"/>
