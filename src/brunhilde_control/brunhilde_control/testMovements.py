@@ -19,7 +19,7 @@ class TestMovements(Node):
         self.joint_names = ['FL_HFE', 'FL_KFE', 'FR_HFE', 'FR_KFE', 'HL_HFE', 'HL_KFE', 'HR_HFE', 'HR_KFE']
         server_reached = self.client.wait_for_server(timeout_sec=60.0)
         if not server_reached:
-            self.get_logger().error('Unable to connect to arm action server. Timeout exceeded.')
+            self.get_logger().error('Unable to connect to action server. Timeout exceeded.')
             sys.exit()
 
         self.joint_state = JointState()
@@ -60,7 +60,7 @@ class TestMovements(Node):
                     "positions": [
                         [0, 0, 0, 0, 0, 0, 0, 0]
                     ],
-                    "durations": [10]
+                    "durations": [5]
                 }
             ]
         }
@@ -122,7 +122,15 @@ class TestMovements(Node):
                 point.time_from_start = rclpy.duration.Duration(seconds=trajectory["durations"][i]).to_msg()
                 action.trajectory.points.append(point)
 
-        action.trajectory.points[0].positions = self.joint_state.position
+        # first positon is the current joint state
+        # CAREFUL: They are not necessarily in the same order
+        # we have to match the joint names
+        action.trajectory.points[0].positions = [0.0] * 8
+        for i in range(len(self.joint_state.name)):
+            for j in range(len(self.joint_names)):
+                if self.joint_state.name[i] == self.joint_names[j]:
+                    action.trajectory.points[0].positions[j] = self.joint_state.position[i]
+
         action.trajectory.points[0].time_from_start = rclpy.duration.Duration(seconds=0).to_msg()
 
         self.get_logger().info(f'Executing movement {movement["name"]}...')

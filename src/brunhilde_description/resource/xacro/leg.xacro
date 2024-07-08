@@ -47,7 +47,6 @@
           <origin xyz="${-base_2_HFE_x} ${-base_2_HFE_y} 0" rpy="0 0 0" />
         </xacro:if>
       </xacro:unless>
-      <!-- pybullet simulation parameters -->
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
 
@@ -126,7 +125,6 @@
           <origin xyz="0 ${-HFE_2_KFE_y} ${-HFE_2_KFE_z}" rpy="0 0 0" />
         </xacro:if>
       </xacro:unless>
-      <!-- pybullet simulation parameters -->
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
 

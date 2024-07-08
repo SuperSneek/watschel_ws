@@ -20,6 +20,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
         (os.path.join('share', package_name, 'resource/xacro/meshes'), glob(os.path.join('resource', 'xacro/meshes/*.stl'))),
+        (os.path.join('share', package_name, 'resource/xacro/collisions'), glob(os.path.join('resource', 'xacro/collisions/*.stl'))),
         (os.path.join('share', package_name, 'resource/xacro'), glob(os.path.join('resource', 'xacro/*.xacro'))),
         (os.path.join('share', package_name, 'resource/rviz'), glob(os.path.join('resource', 'rviz/*.rviz'))),
         (os.path.join('share', package_name, 'resource/urdf'), glob(os.path.join('resource', 'urdf/*.urdf'))),
