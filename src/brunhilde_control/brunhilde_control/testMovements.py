@@ -90,6 +90,26 @@ class TestMovements(Node):
 
         self.execute(testlegs)
 
+    def jump(self) -> None:
+        jump = {
+            "name": "jump",
+            "trajectory": [
+                {
+                    "positions": [
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [1, -2.2, 1, -2.2, -1, 2.2, -1, 2.2],
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                        [0.7, -1.5, 0.7, -1.5, -0.7, 1.5, -0.7, 1.5],
+                        [0.7, -1.5, 0.7, -1.5, -0.7, 1.5, -0.7, 1.5],
+                        [0, 0, 0, 0, 0, 0, 0, 0],
+                    ],
+                    "durations": [3, 4, 4.07, 4.4, 5.5, 6.5]
+                }
+            ]
+        }
+
+        self.execute(jump)
+
     def execute(self, movement: dict) -> None:
         """
             execute movements using the joint trajectory controller
