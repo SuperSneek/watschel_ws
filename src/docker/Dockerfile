@@ -34,12 +34,13 @@ RUN apt-get install -y ros-$ROS_DISTRO-ros2-control ros-$ROS_DISTRO-ros2-control
 RUN apt-get install -y python3 python3-pip python3-colcon-common-extensions python3-colcon-mixin python3-numpy python-is-python3 python3-vcstool
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
 
-# moveit
-RUN rosdep init
-RUN rosdep update
-RUN sudo apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
-
 WORKDIR "/home"
+
+# MuJuCo
+RUN wget https://github.com/google-deepmind/mujoco/releases/download/3.1.6/mujoco-3.1.6-linux-aarch64.tar.gz
+RUN tar -xvf mujoco-3.1.6-linux-aarch64.tar.gz
+RUN rm mujoco-3.1.6-linux-aarch64.tar.gz
+
 
 ### Solo8 Setup ###
 RUN git clone https://github.com/Nordegraf/brunhilde_ws.git --recursive
