@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>watschel_gz_sim</name>
+  <version>1.0.0</version>
+  <description>gazebo integration for the Solo8 based robot of the KIT's HCR Lab.</description>
+  <maintainer email="niklas.conen@student.kit.edu">Niklas Conen</maintainer>
+  <license>MIT</license>
+
+  <depend>watschel_description</depend>
+  <depend>watschel_bringup</depend>
+  <depend>watschel_control</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>ros2_control</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
