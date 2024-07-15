@@ -11,14 +11,10 @@ controller_manager:
 joint_trajectory_controller:
   ros__parameters:
     joints:
-      - FL_HFE
-      - FL_KFE
-      - FR_HFE
-      - FR_KFE
-      - HL_HFE
-      - HL_KFE
-      - HR_HFE
-      - HR_KFE
+      - left_hip_joint
+      - right_hip_joint
+      - lower_leg_right_joint
+      - lower_leg_left_joint
 
     command_interfaces:
       - position

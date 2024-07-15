@@ -49,7 +49,7 @@ def generate_launch_description():
                 arguments=[
                     '-name', 'watschel',
                     '-topic', 'robot_description',
-                    '-z', '0.4',
+                    '-z', '5',
                     '-x', '0',
                     '-y', '0',
                 ],
