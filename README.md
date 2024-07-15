@@ -1,4 +1,4 @@
-# Brunhilde workspace
+# Watschel workspace
 This is a ros2 iron workspace for Brunhilde, the HCR Lab's quadruped based on the ODRI Solo8 robot.
 
 ## Dependencies
