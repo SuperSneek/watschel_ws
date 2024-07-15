@@ -10,7 +10,7 @@ from launch_ros.descriptions import ParameterValue
 import xacro
 
 def create_robot_description(context):
-    urdf_file_name = 'resource/urdf/example_robot.urdf.xacro'
+    urdf_file_name = 'resource/xacro/example_robot.urdf.xacro'
 
     urdf = os.path.join(get_package_share_directory('watschel_description'), urdf_file_name)
 
