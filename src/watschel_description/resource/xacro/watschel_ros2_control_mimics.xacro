@@ -6,32 +6,14 @@
 	<xacro:arg name="use_real_hardware" default="false"/>
 
 
-	<ros2_control name="watschel" type="system">
-    <xacro:macro name="ros2_control_joint" params="link">
+	<ros2_control name="watschel_mimics" type="system">
+    <xacro:macro name="ros2_control_joint" params="link mimic">
 			<joint name="${link}">
-				<command_interface name="position">
-					<param name="min">-0.5</param>
-					<param name="max">0.5</param>
-				</command_interface>
-				<command_interface name="velocity">
-					<param name="min">-1</param>
-					<param name="max">1</param>
-				</command_interface>
-				<command_interface name="effort">
-					<param name="min">-1</param>
-					<param name="max">1</param>
-				</command_interface>
+
 				<state_interface name="position" />
 				<state_interface name="velocity" />
 				<state_interface name="effort" />
-				<param name="motor_number">0</param>
-				<param name="gear_ratio">9.</param>
-				<param name="motor_constant">0.025</param>
-				<param name="max_current">12.</param>
-				<param name="maxObject_joint_velocity">80.</param>
-				<param name="safety_damping">0.5</param>
-				<param name="motor_reversed_polarity">true</param>
-				<param name="position_offset">0.238</param>
+				<mimic joint="${mimic}" multiplier="1" offset="0"></mimic>
 			</joint>
 		</xacro:macro>
 
@@ -65,11 +47,7 @@
 			</xacro:if>
 		</hardware>
 
-		<xacro:ros2_control_joint link="left_hip_joint" />
-		<xacro:ros2_control_joint link="right_hip_joint" />
-		<xacro:ros2_control_joint link="lower_leg_right_joint" />
-		<xacro:ros2_control_joint link="lower_leg_left_joint" />
-
+		<xacro:ros2_control_joint link="foot_left_joint" mimic="left_knee_joint"/>
 	</ros2_control>
 
 	<xacro:if value="$(arg use_sim_hardware)">
