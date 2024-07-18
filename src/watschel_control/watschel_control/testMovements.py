@@ -16,7 +16,7 @@ class TestMovements(Node):
     def __init__(self):
         super().__init__('movements')
         self.client = ActionClient(self, FollowJointTrajectory, '/joint_trajectory_controller/follow_joint_trajectory')
-        self.joint_names = ['FL_HFE', 'FL_KFE', 'FR_HFE', 'FR_KFE', 'HL_HFE', 'HL_KFE', 'HR_HFE', 'HR_KFE']
+        self.joint_names = ['left_hip_joint', 'right_hip_joint', 'lower_leg_right_joint', 'lower_leg_left_joint']
         server_reached = self.client.wait_for_server(timeout_sec=60.0)
         if not server_reached:
             self.get_logger().error('Unable to connect to action server. Timeout exceeded.')
@@ -41,9 +41,9 @@ class TestMovements(Node):
             "trajectory": [
                 {
                     "positions": [
-                        [0, 0, 0, 0, 0, 0, 0, 0],
-                        [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2, -math.pi/4, math.pi/2, -math.pi/4, math.pi/2],
-                        [math.pi/2, -math.pi, math.pi/2, -math.pi, -math.pi/2, math.pi, -math.pi/2, math.pi],
+                        [0, 0, 0, 0],
+                        [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2],
+                        [math.pi/2, -math.pi, math.pi/2, -math.pi],
                     ],
                     "durations": [2, 4, 6]
                 }
@@ -58,7 +58,7 @@ class TestMovements(Node):
             "trajectory": [
                 {
                     "positions": [
-                        [0, 0, 0, 0, 0, 0, 0, 0]
+                        [0, 0, 0, 0]
                     ],
                     "durations": [5]
                 }
@@ -145,7 +145,7 @@ class TestMovements(Node):
         # first positon is the current joint state
         # CAREFUL: They are not necessarily in the same order
         # we have to match the joint names
-        action.trajectory.points[0].positions = [0.0] * 8
+        action.trajectory.points[0].positions = [0.0] * 4
         for i in range(len(self.joint_state.name)):
             for j in range(len(self.joint_names)):
                 if self.joint_state.name[i] == self.joint_names[j]:

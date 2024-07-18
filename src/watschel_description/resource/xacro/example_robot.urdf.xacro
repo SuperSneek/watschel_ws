@@ -5,17 +5,27 @@
     <!-- As we move through the file, new things to note will be pointed out. -->
     <!-- It's not meant an example of GOOD design, but an example of some of the various features of URDF/xacro. -->
 
+    <link name="base_link">
+    </link>
+  
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="body_frame"/>
+    </joint>
+
+
 
     <xacro:property name="joint_angle" value="${pi/4}" />
     <xacro:property name="knee_angle" value="joint_angle*2" />
 
 
-    <!-- base_link is a large rectangular plate. Some things to note: -->
+    <!-- body_frame is a large rectangular plate. Some things to note: -->
     <!-- - We set the visual origin Z to half the box height, so that the link origin sits at the bottom of the box -->
     <!-- - We set the collision to be identical to the visual -->
     <!-- - We specified the colour manually (but still need to enter a name) -->
     <!-- - We specified all the inertial parameters manually -->
-    <link name="base_link">
+    <link name="body_frame">
         <visual>
             <geometry>
                 <mesh filename="package://watschel_description/meshes/3d_modelle/Hip.stl" scale="0.01 0.01 0.01"/>
@@ -24,6 +34,13 @@
                 <color rgba="0.2 1 0.2 1"/>
             </material>
         </visual>
+        <collision>
+            <geometry>
+                <box size="1.2 0.3 0.1">
+                </box>
+                <origin xyz="0.0 4.0 0.0"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
             <mass value="12" />
@@ -33,7 +50,7 @@
 
     <joint name="left_hip_joint" type="revolute">
         <origin xyz="-0.36 0.24 0.05" rpy="0 0 0"/>
-        <parent link="base_link"/>
+        <parent link="body_frame"/>
         <child link="leg_upper_left"/>
         <axis xyz="-1 0 0"/>
         <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
@@ -56,7 +73,7 @@
 
     <joint name="support_upper_left_joint" type="revolute">
         <origin xyz="-0.36 0.5 0.05" rpy="0 0 0"/>
-        <parent link="base_link"/>
+        <parent link="body_frame"/>
         <child link="support_upper_left"/>
         <axis xyz="-1 0 0"/>
         <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
@@ -73,7 +90,7 @@
 
     <joint name="right_hip_joint" type="revolute">
         <origin xyz="0.36 0.24 0.05" rpy="0 0 0"/>
-        <parent link="base_link"/>
+        <parent link="body_frame"/>
         <child link="leg_upper_right"/>
         <axis xyz="-1 0 0"/>
         <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
@@ -95,12 +112,11 @@
         </inertial>
     </link>
 
-    <joint name="knee_left_joint" type="revolute">
+    <joint name="knee_left_joint" type="fixed">
         <origin xyz="0 0 -0.65" rpy="0 0 0"/>
         <parent link="leg_upper_left"/>
         <child link="knee_left"/>
         <axis xyz="-1 0 0"/>
-        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
         <mimic joint="left_hip_joint" multiplier="-1"/>
     </joint>
 
@@ -119,12 +135,11 @@
         </inertial>
     </link>
 
-    <joint name="knee_right_joint" type="revolute">
+    <joint name="knee_right_joint" type="fixed">
         <origin xyz="0 0 -0.65" rpy="0 0 0"/>
         <parent link="leg_upper_right"/>
         <child link="knee_right"/>
         <axis xyz="-1 0 0"/>
-        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
         <mimic joint="right_hip_joint" multiplier="-1"/>
     </joint>
 
@@ -189,12 +204,11 @@
         </inertial>
     </link>
 
-    <joint name="foot_left_joint" type="revolute">
+    <joint name="foot_left_joint" type="fixed">
         <origin xyz="0 0.05 -0.65"/>
         <parent link="leg_lower_left"/>
         <child link="foot_left"/>
         <axis xyz="-1 0 0"/>
-        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
         <mimic  joint="lower_leg_left_joint" multiplier="-1" />
 
     </joint>
@@ -219,12 +233,11 @@
         </inertial>
     </link>
 
-    <joint name="foot_right_joint" type="revolute">
+    <joint name="foot_right_joint" type="fixed">
         <origin xyz="0 0.05 -0.65"/>
         <parent link="leg_lower_right"/>
         <child link="foot_right"/>
         <axis xyz="-1 0 0"/>
-        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
         <mimic  joint="lower_leg_right_joint" multiplier="-1" />
 
     </joint>
