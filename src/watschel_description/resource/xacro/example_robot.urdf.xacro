@@ -43,8 +43,8 @@
         </collision>
         <inertial>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
-            <mass value="12" />
-            <inertia ixx="2.26" ixy="0.0" ixz="0.0" iyy="6.26" iyz="0.0" izz="8.5" />
+            <mass value="172" />
+            <inertia ixx="65.06899629082241" ixy="0.0" ixz="0.0" iyy="188.99729683407716" iyz="0.0" izz="242.36785108586454" />
         </inertial>
     </link>
 
@@ -67,7 +67,7 @@
         </visual>
         <inertial>
             <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <inertia ixx="42.70110889206565" ixy="0.0" ixz="0.0" iyy="54.35021715917743" iyz="0.0" izz="15.553565591531272"/>
         </inertial>
     </link>
 
@@ -108,7 +108,7 @@
         </visual>
         <inertial>
             <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <inertia ixx="42.70110889206565" ixy="0.0" ixz="0.0" iyy="54.35021715917743" iyz="0.0" izz="15.553565591531272"/>
         </inertial>
     </link>
 
@@ -130,8 +130,8 @@
             </material>
         </visual>
         <inertial>
-            <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <mass value="20"/>
+            <inertia ixx="50.868164916992344" ixy="0.0" ixz="0.0" iyy="22.91604242324853" iyz="0.0" izz="63.92287750625619"/>
         </inertial>
     </link>
 
@@ -153,8 +153,8 @@
             </material>
         </visual>
         <inertial>
-            <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <mass value="20"/>
+            <inertia ixx="50.868164916992344" ixy="0.0" ixz="0.0" iyy="22.91604242324853" iyz="0.0" izz="63.92287750625619"/>
         </inertial>
     </link>
 
@@ -177,7 +177,7 @@
         </visual>
         <inertial>
             <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <inertia ixx="44.06199538400554" ixy="0.0" ixz="0.0" iyy="60.37315620362157" iyz="0.0" izz="20.349008232508035"/>
         </inertial>
     </link>
 
@@ -200,7 +200,7 @@
         </visual>
         <inertial>
             <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <inertia ixx="44.06199538400554" ixy="0.0" ixz="0.0" iyy="60.37315620362157" iyz="0.0" izz="20.349008232508035"/>
         </inertial>
     </link>
 
@@ -228,8 +228,8 @@
             </geometry>
         </collision>
         <inertial>
-            <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <mass value="11"/>
+            <inertia ixx="30.922726715508456" ixy="0.0" ixz="0.0" iyy="11.747663442495953" iyz="0.0" izz="31.94689382554976"/>
         </inertial>
     </link>
 
@@ -245,7 +245,7 @@
     <link name="foot_right">
         <visual>
             <geometry>
-                <mesh filename="package://watschel_description/meshes/3d_modelle/Left_leg/Foot.stl" scale="0.01 0.01 0.01"/> 
+                <mesh filename="package://watschel_description/meshes/3d_modelle/Right_leg/Foot.stl" scale="0.01 0.01 0.01"/> 
             </geometry>
             <material name="green">
                 <color rgba="0.0 1 0.2 1"/>
@@ -259,8 +259,8 @@
             
         </collision>
         <inertial>
-            <mass value="10"/>
-            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+            <mass value="11"/>
+            <inertia ixx="30.922726715508456" ixy="0.0" ixz="0.0" iyy="11.747663442495953" iyz="0.0" izz="31.94689382554976"/>
         </inertial>
     </link>
 
