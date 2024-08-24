@@ -26,6 +26,7 @@ setup(
     entry_points={
         'console_scripts': [
             'testMovements = watschel_control.testMovements:main',
+            'node = watschel_control.node_backup:main',
         ],
     },
 )

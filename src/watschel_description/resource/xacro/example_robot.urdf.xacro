@@ -42,7 +42,7 @@
             </geometry>
         </collision>
         <inertial>
-            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <origin xyz="0 0.28 0.09" rpy="0 0 0"/>
             <mass value="172" />
             <inertia ixx="65.06899629082241" ixy="0.0" ixz="0.0" iyy="188.99729683407716" iyz="0.0" izz="242.36785108586454" />
         </inertial>
@@ -71,17 +71,49 @@
         </inertial>
     </link>
 
-    <joint name="support_upper_left_joint" type="revolute">
+    <joint name="support_upper_left_joint" type="fixed">
         <origin xyz="-0.36 0.5 0.05" rpy="0 0 0"/>
         <parent link="body_frame"/>
         <child link="support_upper_left"/>
         <axis xyz="-1 0 0"/>
         <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
-        <mimic joint="left_hip_joint"/> 
+        <mimic joint="left_hip_joint" multiplier="1"/> 
     </joint>
 
     <link name="support_upper_left">
+        <visual>
+            <geometry>
+                <mesh filename="package://watschel_description/meshes/3d_modelle/Left_leg/Top_leg_back.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
+    </link>
 
+    <joint name="support_upper_right_joint" type="fixed">
+
+        <origin xyz="0.36 0.5 0.05" rpy="0 0 0"/>
+        <parent link="body_frame"/>
+        <child link="support_upper_right"/>
+        <axis xyz="-1 0 0"/>
+        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
+        <mimic joint="left_hip_joint" multiplier="1"/> 
+    </joint>
+
+    <link name="support_upper_right">
+        <visual>
+            <geometry>
+                <mesh filename="package://watschel_description/meshes/3d_modelle/Right_leg/Top_leg_back.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
         <inertial>
             <mass value="10"/>
             <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
@@ -112,11 +144,12 @@
         </inertial>
     </link>
 
-    <joint name="knee_left_joint" type="fixed">
+    <joint name="knee_left_joint" type="revolute">
         <origin xyz="0 0 -0.65" rpy="0 0 0"/>
         <parent link="leg_upper_left"/>
         <child link="knee_left"/>
         <axis xyz="-1 0 0"/>
+        <limit lower="-1" upper="1" effort="0.0" velocity="0.0"/>
         <mimic joint="left_hip_joint" multiplier="-1"/>
     </joint>
 
@@ -213,6 +246,57 @@
 
     </joint>
 
+    <joint name="support_lower_right_joint" type="fixed">
+
+        <origin xyz="-0.15 0.15 0" rpy="0 0 0"/>
+        <parent link="knee_right"/>
+        <child link="support_lower_right"/>
+        <axis xyz="-1 0 0"/>
+        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
+        <mimic joint="lower_leg_right_joint" multiplier="1"/> 
+    </joint>
+
+    <link name="support_lower_right">
+        <visual>
+            <geometry>
+                <mesh filename="package://watschel_description/meshes/3d_modelle/Right_leg/Low_leg_back.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
+    </link>
+
+    <joint name="support_lower_left_joint" type="fixed">
+
+        <origin xyz="0 0.15 0" rpy="0 0 0"/>
+        <parent link="knee_left"/>
+        <child link="support_lower_left"/>
+        <axis xyz="-1 0 0"/>
+        <limit lower="${-pi/4}" upper="${pi/4}" velocity="100" effort="100"/> 
+        <mimic joint="lower_leg_left_joint" multiplier="1"/> 
+    </joint>
+
+    <link name="support_lower_left">
+        <visual>
+            <geometry>
+                <mesh filename="package://watschel_description/meshes/3d_modelle/Left_leg/Low_leg_back.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="green">
+                <color rgba="0.2 1 0.2 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
+    </link>
+
+
     <link name="foot_left">
         <visual>
             <geometry>
@@ -250,7 +334,6 @@
             <material name="green">
                 <color rgba="0.0 1 0.2 1"/>
             </material>
-
         </visual>
         <collision>
             <geometry>

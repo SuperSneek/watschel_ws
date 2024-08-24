@@ -42,10 +42,9 @@ class TestMovements(Node):
                 {
                     "positions": [
                         [0, 0, 0, 0],
-                        [math.pi/4, -math.pi/2, math.pi/4, -math.pi/2],
-                        [math.pi/2, -math.pi, math.pi/2, -math.pi],
+                        [-math.pi/4, -math.pi/4, math.pi/4, math.pi/4],
                     ],
-                    "durations": [2, 4, 6]
+                    "durations": [2, 4]
                 }
             ]
         }
@@ -58,9 +57,11 @@ class TestMovements(Node):
             "trajectory": [
                 {
                     "positions": [
+                        [0, 0, 0, 0],
+                        [0.2, 0.2, 0, 0],
                         [0, 0, 0, 0]
                     ],
-                    "durations": [5]
+                    "durations": [1,5,10]
                 }
             ]
         }
@@ -168,10 +169,10 @@ def main(args=None):
     move = TestMovements()
 
     for i in range(0, 1):
-        move.sitdown()
-        time.sleep(4)
+        #move.sitdown()
+        #time.sleep(4)
         move.standup()
-        time.sleep(4)
+        #time.sleep(4)
 
     move.destroy_node()
     rclpy.shutdown()
