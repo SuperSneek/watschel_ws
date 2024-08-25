@@ -651,6 +651,9 @@ def init_plot(ros_node):
     def publish_print_data(delt):
         print("deltas", delt)
         ros_node.publish_deltas(delt)
+
+        states = [delt[0][0],delt[1][0],delt[0][1],delt[1][1]]
+        ros_node.publish_joint_state(states)
         print_data(delt)
 
     def publish_traj(ik_vals_, ts):
