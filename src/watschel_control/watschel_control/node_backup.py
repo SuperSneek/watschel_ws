@@ -616,10 +616,14 @@ def init_plot(ros_node):
             lin_interpols_vals = (liv_t[0:2].tolist() + [liv_t[2:4].tolist()]
                                   + [liv_t[4].tolist()])
 
-            ros_node.publish_joint_state(lin_interpols_vals)
+            
             watschel.set_ik_vals(lin_interpols_vals)
             lin_interpols_deltas = ik(watschel)
+            print("SUS")
+
             print_data(lin_interpols_deltas)
+            states = [lin_interpols_deltas[0][0],lin_interpols_deltas[1][0],lin_interpols_deltas[0][1],lin_interpols_deltas[1][1]]
+            ros_node.publish_joint_state(states)
             plt.pause(.001)
             curr_time_delta = time.time() - start_time
 
