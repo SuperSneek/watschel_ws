@@ -624,7 +624,7 @@ def init_plot(ros_node):
             print_data(lin_interpols_deltas)
             states = [lin_interpols_deltas[0][0],lin_interpols_deltas[1][0],lin_interpols_deltas[0][1],lin_interpols_deltas[1][1]]
             ros_node.publish_joint_state(states)
-            plt.pause(.001)
+            plt.pause(.0001)
             curr_time_delta = time.time() - start_time
 
     play_button.on_clicked(play)
