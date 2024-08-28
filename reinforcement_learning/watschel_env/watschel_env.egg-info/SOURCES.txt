@@ -1,0 +1,11 @@
+setup.py
+watschel_env/__init__.py
+watschel_env/train_watschel.py
+watschel_env.egg-info/PKG-INFO
+watschel_env.egg-info/SOURCES.txt
+watschel_env.egg-info/dependency_links.txt
+watschel_env.egg-info/requires.txt
+watschel_env.egg-info/top_level.txt
+watschel_env/envs/__init__.py
+watschel_env/envs/watschel_env.py
+watschel_env/wrappers/__init__.py

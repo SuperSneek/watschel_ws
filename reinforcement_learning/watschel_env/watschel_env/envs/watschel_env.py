@@ -1,26 +1,16 @@
 from coppeliasim_zmqremoteapi_client import RemoteAPIClient
-import gym
-from gym import spaces
+import gymnasium as gym
+from gymnasium import spaces
 import numpy as np
-from gym import ActionWrapper, ObservationWrapper, RewardWrapper, Wrapper
-from gym.spaces import Box, Discrete
+from gymnasium import ActionWrapper, ObservationWrapper, RewardWrapper, Wrapper
+from gymnasium.spaces import Box, Discrete
 import time
 
-client = RemoteAPIClient()
-sim = client.require('sim')
-
-sim.setStepping(True)
-
-sim.startSimulation()
-while (t := sim.getSimulationTime()) < 3:
-    print(f'Simulation time: {t:.2f} [s]')
-    sim.step()
-sim.stopSimulation()
 
 class WatschelWorld(gym.Env):
 
 
-    def __init__(self, render_mode=None, size=5):
+    def __init__(self):
         #Init coppeliasim api
         self._reset_client()
 
@@ -28,12 +18,13 @@ class WatschelWorld(gym.Env):
 
 
         self.episode_index = 0
+        self.step_index = 0
 
         # Observations are dictionaries with the agent's and the target's location.
         # Each location is encoded as an element of {0, ..., `size`}^2, i.e. MultiDiscrete([size, size]).
         self.observation_space = spaces.Dict(
             {
-                "legs": spaces.Box(-2, 2, shape=(2,4), dtype=float),
+                "legs": spaces.Box(-2, 2, shape=(4,), dtype=float),
                 "position": spaces.Box(-1000, 1000, shape=(2,2), dtype=float),
             }
         )
@@ -41,12 +32,12 @@ class WatschelWorld(gym.Env):
         maxForce = 300
 
         # 4 bounded intervals to apply force to the 4 motors respectively
-        self.action_space = spaces.Box(low=-maxForce, high=maxForce, shape=(2,4))
+        self.action_space = spaces.Box(low=-maxForce, high=maxForce, shape=(4,))
 
 
 
     def _get_obs(self):
-        return None # todo: get observation from coppeliasim
+        return { "legs": self.sim.callScriptFunction("get_joint_angles", self.bridge_handle), "position" :  self.sim.callScriptFunction("get_position", self.bridge_handle)}
     
     def _get_info(self):
         return {}
@@ -54,7 +45,7 @@ class WatschelWorld(gym.Env):
 
     def reset(self, seed=None, options=None):
         self.episode_index = self.episode_index + 1
-
+        self.step_index = 0
 
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
@@ -72,6 +63,8 @@ class WatschelWorld(gym.Env):
         
         self.sim.startSimulation()
 
+        return self._get_obs(), self._get_info()
+
 
 
     def _reset_client(self):
@@ -82,20 +75,23 @@ class WatschelWorld(gym.Env):
 
     def step(self, action):
         ## Send forces from action to coppeliasim
-        self.sim.callScriptFunction("set_forces", self.bridge_handle, action)
+        self.sim.callScriptFunction("set_forces", self.bridge_handle, action.tolist())
 
 
         # An episode is done if the agent has reached the target
-        terminated = sim.getSimulationTime() < 5 and self.sim.callScriptFunction("is_fallen", self.bridge_handle)
+        terminated = self.sim.getSimulationTime() < 50 and self.sim.callScriptFunction("getIsFallen", self.bridge_handle)
         reward = self._get_reward()
         observation = self._get_obs()
         info = self._get_info()
 
-        if self.episode_index % 10 == 0:
+        self.step_index = self.step_index + 1
+
+        if self.step_index % 100 == 0:
             print("Taking action: " + str(action))
             print("Reward is " + str(reward))
+            print("Observation was:" + str(observation))
 
-        for i in len(range(5)): #only do rewards every x steps
+        for i in range(5): #only do rewards every x steps
             self.sim.step()
 
         return observation, reward, terminated, False, info
@@ -107,10 +103,3 @@ class WatschelWorld(gym.Env):
     def close(self):
         self.sim.stopSimulation()
 
-class RelativePosition(ObservationWrapper):
-    def __init__(self, env):
-        super().__init__(env)
-        self.observation_space = Box(shape=(2,), low=-np.inf, high=np.inf)
-
-    def observation(self, obs):
-        return obs["target"] - obs["agent"]
