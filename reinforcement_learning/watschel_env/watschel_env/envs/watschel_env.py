@@ -60,7 +60,7 @@ class WatschelWorld(gym.Env):
             self._reset_client()
             time.sleep(1)
 
-        
+        self.sim.setInt32Param(self.sim.intparam_speedmodifier, 5)
         self.sim.startSimulation()
 
         return self._get_obs(), self._get_info()
@@ -95,6 +95,7 @@ class WatschelWorld(gym.Env):
             self.sim.step()
 
         return observation, reward, terminated, False, info
+    
     
     def _get_reward(self):
         #get reward from coppeliasim

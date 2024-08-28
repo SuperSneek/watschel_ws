@@ -71,7 +71,7 @@ class Policy_Network(nn.Module):
 class REINFORCE:
     """REINFORCE algorithm."""
 
-    def __init__(self, obs_space_dims: int, action_space_dims: int):
+    def __init__(self, obs_space_dims: int, action_space_dims: int, load_old = True):
         """Initializes an agent that learns a policy via REINFORCE algorithm [1]
         to solve the task at hand (Inverted Pendulum v4).
 
@@ -90,6 +90,9 @@ class REINFORCE:
 
         self.net = Policy_Network(obs_space_dims, action_space_dims)
         self.optimizer = torch.optim.AdamW(self.net.parameters(), lr=self.learning_rate)
+
+        if(load_old):
+            self.load()
 
     def sample_action(self, state: np.ndarray) -> float:
         """Returns an action, conditioned on the policy and observation.
@@ -140,3 +143,24 @@ class REINFORCE:
         # Empty / zero out all episode-centric/related variables
         self.probs = []
         self.rewards = []
+
+    def save(self):
+        checkpoint = { 'model_state_dict' : self.net.state_dict(), 'optimizer_state_dict' : self.optimizer.state_dict() }
+
+
+        torch.save(checkpoint,r"/home/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
+
+    def load(self):
+        try:
+            # Load the checkpoint dictionary from the specified file path
+            checkpoint = torch.load(r"/home/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
+
+            # Load the model and optimizer state from the checkpoint
+            self.net.load_state_dict(checkpoint['model_state_dict'])
+            self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+            print(f"Model and optimizer state loaded")
+
+        except Exception as e:
+            print(e)
+            print("Loading Model and Optimizer failed :(")
