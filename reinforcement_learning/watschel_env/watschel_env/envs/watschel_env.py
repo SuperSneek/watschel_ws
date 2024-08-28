@@ -25,7 +25,7 @@ class WatschelWorld(gym.Env):
         self.observation_space = spaces.Dict(
             {
                 "legs": spaces.Box(-2, 2, shape=(4,), dtype=float),
-                "position": spaces.Box(-1000, 1000, shape=(2,2), dtype=float),
+                "position": spaces.Box(-1000, 1000, shape=(2,), dtype=float),
             }
         )
 
