@@ -7,3 +7,6 @@
 [submodule "src/solo8_packages/ros2_hardware_interface_odri"]
 	path = src/solo8_packages/ros2_hardware_interface_odri
 	url = https://github.com/Nordegraf/ros2_hardware_interface_odri.git
+[submodule "reinforecement_learning/reinforce_lib"]
+	path = reinforcement_learning/reinforce_lib
+	url = https://github.com/Luca96/reinforce-lib.git
