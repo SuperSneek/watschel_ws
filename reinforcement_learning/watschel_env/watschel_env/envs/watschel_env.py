@@ -29,7 +29,7 @@ class WatschelWorld(gym.Env):
             }
         )
 
-        maxForce = 300
+        maxForce = 600
 
         # 4 bounded intervals to apply force to the 4 motors respectively
         self.action_space = spaces.Box(low=-maxForce, high=maxForce, shape=(4,))

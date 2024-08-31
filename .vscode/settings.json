@@ -1,0 +1,21 @@
+{
+    "ros.distro": "jazzy",
+    "python.autoComplete.extraPaths": [
+        "/home/jonas/Projects/watschel_ws/install/watschel_teleop/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_gz_sim/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_env/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_control/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_bringup/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_description/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/jonas/Projects/watschel_ws/install/watschel_teleop/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_gz_sim/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_env/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_control/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_bringup/lib/python3.12/site-packages",
+        "/home/jonas/Projects/watschel_ws/install/watschel_description/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ]
+}

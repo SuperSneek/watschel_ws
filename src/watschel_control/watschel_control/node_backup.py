@@ -88,7 +88,7 @@ class MyROSNode(Node):
 
         state = list(map(lambda x:float(x), state))
         msg.position = state
-        print(state)
+        #print(state)
         msg.velocity = [float(0),float(0),float(0),float(0)]
         msg.effort = [float(0),float(0),float(0),float(0)]
 
@@ -183,12 +183,13 @@ class watschelApprox():
         self.update_ik_vals = True
         self.update_fk_vals = True
         self.keypoint_index = 0
-        self.t_keypoints_first = .30  # second
-        self.t_keypoints_second = .10  # second
+        self.t_keypoints_first = 0.3 # second
+        self.t_keypoints_second =0.6  # second
 
     @property
     def ik_vals(self):
         return [self.alpha, self.x_com, self.step_diff, self.z]
+        
 
     def set_ik_vals(self, ik_vals__):
         self.alpha = ik_vals__[0]
@@ -316,8 +317,8 @@ def fk_plot(d: List, ax1, ax2, ax3, watschel):
 
 
 def ik(watschel):
-    print(watschel.current_moving_foot,
-          watschel.step_diff)
+    #print(watschel.current_moving_foot,
+    #      watschel.step_diff)
     if watschel.current_moving_foot == 0:
         c0 = watschel.step_diff[0]
         c1 = watschel.x_com + watschel.step_diff[1]
@@ -326,7 +327,7 @@ def ik(watschel):
         c1 = watschel.step_diff[1]
 
     d = (watschel.z - sin(watschel.alpha) * l_3 / 2) / cos(watschel.alpha)
-    print(watschel.ik_vals)
+    #print(watschel.ik_vals)
 
     def find_in_bounds(y_1, y_2, bounds, i, j):
         x = np.linspace(bounds[0], bounds[1], 10 ** 4)
@@ -505,7 +506,7 @@ def init_plot(ros_node):
 
     def change_step(event):
         watschel.current_moving_foot = 1 - watschel.current_moving_foot
-        print(watschel.current_moving_foot)
+        #print(watschel.current_moving_foot)
         change_step_button.label.set_text(str(watschel.current_moving_foot))
         step_diff_slider.label.set_text('step_diff ' +
                                         lakj[watschel.current_moving_foot])
@@ -593,13 +594,31 @@ def init_plot(ros_node):
         else:
             return watschel.t_keypoints_second
 
+    def play2(event):
+
+        for i in range(len(ik_valss)):
+            curr_vals = (np.array(ik_valss[i][0:2] + ik_valss[i][2] +
+                                  [ik_valss[i][3]]))
+            curr_ik_vals = (curr_vals[0:2].tolist() + [curr_vals[2:4].tolist()]
+                              + [curr_vals[4].tolist()])
+            
+            watschel.set_ik_vals(curr_ik_vals)
+            curr_deltas = ik(watschel)
+            states = [curr_deltas[0][0],curr_deltas[1][0],curr_deltas[0][1],curr_deltas[1][1]]
+            ros_node.publish_joint_state(states)
+
+            time.sleep(0.7)
+
     def play(event):
         publish_traj(ik_valss,
                      [get_time_for_ind(ind__) for ind__ in times_adaption])
         start_time = time.time()
         curr_time_delta = 0
         i__ = 0
-        # print("start_time", start_time)
+
+        last_i = 0
+
+        print("start_time", start_time)
         while (int(np.ceil(curr_time_delta /
                            get_time_for_ind(times_adaption[i__]))) < len(ik_valss)):
             # print("t:", curr_time_delta / duration_between_keypoints)
@@ -609,6 +628,8 @@ def init_plot(ros_node):
                                   [ik_valss[i__][3]]))
             next_vals = (np.array(ik_valss[i__ + 1][0:2] + ik_valss[i__ + 1][2]
                                   + [ik_valss[i__ + 1][3]]))
+            
+            last_i = i__
             t = (curr_time_delta - get_time_for_ind(times_adaption[i__]) *
                  np.floor(curr_time_delta /
                           get_time_for_ind(times_adaption[i__])))
@@ -616,15 +637,14 @@ def init_plot(ros_node):
             lin_interpols_vals = (liv_t[0:2].tolist() + [liv_t[2:4].tolist()]
                                   + [liv_t[4].tolist()])
 
-            
             watschel.set_ik_vals(lin_interpols_vals)
             lin_interpols_deltas = ik(watschel)
-            print("SUS")
+            #print("SUS")
 
-            print_data(lin_interpols_deltas)
             states = [lin_interpols_deltas[0][0],lin_interpols_deltas[1][0],lin_interpols_deltas[0][1],lin_interpols_deltas[1][1]]
             ros_node.publish_joint_state(states)
-            plt.pause(.0001)
+            
+            plt.pause(.1)
             curr_time_delta = time.time() - start_time
 
     play_button.on_clicked(play)
@@ -649,7 +669,7 @@ def init_plot(ros_node):
         fig.canvas.draw_idle()
 
     def publish_print_data(delt):
-        print("deltas", delt)
+        #print("deltas", delt)
         ros_node.publish_deltas(delt)
 
         states = [delt[0][0],delt[1][0],delt[0][1],delt[1][1]]
@@ -663,7 +683,7 @@ def init_plot(ros_node):
         for ik_v in ik_vals_:
             watschel.set_ik_vals(ik_v)
             delts.append(ik(watschel))
-        print(delts)
+        #print(delts)
         ros_node.publish_trajectories(delts, ts)
 
     # deltas = [[-45/360*2*pi, 30/360*2*pi], [-30/360*2*pi, 30/360*2*pi]]
@@ -671,7 +691,7 @@ def init_plot(ros_node):
 
     try:
         deltas = ik(watschel)
-        print("deltas", deltas)
+        #print("deltas", deltas)
     except Exception:
         pass
     publish_print_data(deltas)

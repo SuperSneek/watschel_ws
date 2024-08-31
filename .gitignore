@@ -1,3 +1,4 @@
+.conda/
 core
 build/
 install/

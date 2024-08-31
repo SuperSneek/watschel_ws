@@ -26,8 +26,8 @@ class Policy_Network(nn.Module):
         """
         super().__init__()
 
-        hidden_space1 = 16  # Nothing special with 16, feel free to change
-        hidden_space2 = 32  # Nothing special with 32, feel free to change
+        hidden_space1 = 32  # Nothing special with 16, feel free to change
+        hidden_space2 = 64  # Nothing special with 32, feel free to change
 
         # Shared Network
         self.shared_net = nn.Sequential(
@@ -148,12 +148,12 @@ class REINFORCE:
         checkpoint = { 'model_state_dict' : self.net.state_dict(), 'optimizer_state_dict' : self.optimizer.state_dict() }
 
 
-        torch.save(checkpoint,r"/home/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
+        torch.save(checkpoint,r"/home/jonas/Projects/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
 
     def load(self):
         try:
             # Load the checkpoint dictionary from the specified file path
-            checkpoint = torch.load(r"/home/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
+            checkpoint = torch.load(r"/home/jonas/Projects/watschel_ws/reinforcement_learning/ressources/watschel_policy.dict")
 
             # Load the model and optimizer state from the checkpoint
             self.net.load_state_dict(checkpoint['model_state_dict'])
