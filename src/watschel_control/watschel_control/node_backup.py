@@ -597,15 +597,7 @@ def init_plot(ros_node):
     def play2(event):
 
         for i in range(len(ik_valss)):
-            curr_vals = (np.array(ik_valss[i][0:2] + ik_valss[i][2] +
-                                  [ik_valss[i][3]]))
-            curr_ik_vals = (curr_vals[0:2].tolist() + [curr_vals[2:4].tolist()]
-                              + [curr_vals[4].tolist()])
-            
-            watschel.set_ik_vals(curr_ik_vals)
-            curr_deltas = ik(watschel)
-            states = [curr_deltas[0][0],curr_deltas[1][0],curr_deltas[0][1],curr_deltas[1][1]]
-            ros_node.publish_joint_state(states)
+            next(event)
 
             time.sleep(0.7)
 
@@ -647,7 +639,7 @@ def init_plot(ros_node):
             plt.pause(.1)
             curr_time_delta = time.time() - start_time
 
-    play_button.on_clicked(play)
+    play_button.on_clicked(play2)
 
     def set_delta_sliders(delt):
         delta11_slider.set_val(delt[0][0])
