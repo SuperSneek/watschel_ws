@@ -33,12 +33,12 @@ export DISPLAY=100.124.167.36:0
 
 
 ik_valss = [[0, -0.5, [0, 0.5], 8.3],  # 0 stand up
-            [0.3, -0.5, [0, 0.5], 8.3],  # 1 lean right
-            [0.3, 0, [0, 2.0], 7.8],  # 3 slide back
-            [-0.3, 1.5, [0, 0.5], 8.3],  # 5 lean left
-            [-0.3, -2.0, [0, -2.], 7.8],  # 7 slide back
-            [0.3, 0, [0, -2.], 7.8],  # 9 lean right
-            [0.3, 0, [0, 0.0], 7.8],  # 11 slide back
+            [0.2, -0.5, [0, 0.5], 7.9],  # 1 lean right
+            [0.2, 0, [0, 2.0], 7.6],  # 3 slide back
+            [-0.2, 1.5, [0, 0.5], 7.9],  # 5 lean left
+            [-0.2, -2.0, [0, -2.], 7.6],  # 7 slide back
+            [0.2, 0, [0, -2.], 7.6],  # 9 lean right
+            [0.2, 0, [0, 0.0], 7.6],  # 11 slide back
             [0, -0.5, [0, 0.5], 8.3]]  # 12 stand up
 
 times_adaption = [1, 1, 2, 1, 2, 1, 2, 1]
@@ -596,10 +596,12 @@ def init_plot(ros_node):
 
     def play2(event):
 
+        wait_times = [0.6, 0.65, 0.85, 0.9, 0.75, 1.0, 1.5,0]
+
         for i in range(len(ik_valss)):
             next(event)
 
-            time.sleep(0.7)
+            time.sleep(wait_times[i])
 
     def play(event):
         publish_traj(ik_valss,
