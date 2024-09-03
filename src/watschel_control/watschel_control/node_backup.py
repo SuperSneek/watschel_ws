@@ -596,7 +596,7 @@ def init_plot(ros_node):
 
     def play2(event):
 
-        wait_times = [0.6, 0.7, 0.88, 0.9, 0.70, 0.7, 1.5,0]
+        wait_times = [0.6, 0.4, 0.88, 0.9, 0.70, 0.7, 1.5,0]
 
         for i in range(len(ik_valss)):
             next(event)
